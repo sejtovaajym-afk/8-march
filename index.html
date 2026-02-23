@@ -58,12 +58,14 @@
 
       <p class="note">
         Қатысуыңызды растаңыз.
-        <span class="muted">“Бармаймын” бір-ақ рет әзілдейді 🙂</span>
-      </p>
 
-      <div class="actions">
+     <div class="actions">
+      <div class="btnRow">
         <button class="btn primary" id="yesBtn" type="button">Барамын ✅</button>
-      </div>
+        <button class="btn ghost" id="noBtn" type="button">Бармаймын 🙃</button>
+       </div>
+     </div>
+
 
       <div class="status" id="status" aria-live="polite"></div>
 
@@ -75,8 +77,6 @@
     </section>
   </main>
 
-  <!-- “Бармаймын” (тек 1 рет қашады) -->
-  <button class="btn ghost runaway" id="noBtn" type="button">Бармаймын 🙃</button>
 
   <!-- Конфетти -->
   <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>

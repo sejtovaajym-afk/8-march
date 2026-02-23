@@ -186,7 +186,7 @@ function triggerRunAwayOnce(){
   hasRunAway = true;
 
   moveNoButtonOnce();
-  status.textContent = "😄 “Бармаймын” бір рет әзілдеді. Енді тыныш 🙂";
+  status.textContent = "😄"
   finalizeNoButton();
 }
 
