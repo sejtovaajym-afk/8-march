@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Шақыру • 8 Наурыз</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <!-- Артқы фон -->
+  <div class="bg" aria-hidden="true">
+    <div class="grid"></div>
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+    <div class="sparkles"></div>
+  </div>
+
+  <main class="wrap">
+    <section class="card" id="card" aria-label="8 Наурызға шақыру">
+      <header class="top">
+        <div class="badge">💐 Университет оқытушыларына • 8 Наурыз</div>
+
+        <div class="topActions">
+          <button class="pill" id="musicToggle" type="button">🔇 Әуен: Өшірулі</button>
+          <button class="pill" id="fullscreenBtn" type="button">⛶ Толық экран</button>
+        </div>
+      </header>
+
+      <h1 class="title">
+        8 Наурыз мерекесіне <span class="shine">шақыру</span>
+      </h1>
+
+      <p class="subtitle" id="typeText"></p>
+
+      <div class="info">
+        <div class="infoItem">
+          <div class="k">📅 Күні</div>
+          <div class="v">4 наурыз</div>
+        </div>
+        <div class="infoItem">
+          <div class="k">🕒 Уақыты</div>
+          <div class="v">14:00</div>
+        </div>
+        <div class="infoItem">
+          <div class="k">📍 Өтетін орны</div>
+          <div class="v">Акт залы / IT Hub</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="countdown">
+        <div class="countTitle">Кездесуге дейін:</div>
+        <div class="countNumbers" id="countdown"></div>
+      </div>
+
+      <p class="note">
+        Қатысуыңызды растаңыз.
+        <span class="muted">“Бармаймын” бір-ақ рет әзілдейді 🙂</span>
+      </p>
+
+      <div class="actions">
+        <button class="btn primary" id="yesBtn" type="button">Барамын ✅</button>
+      </div>
+
+      <div class="status" id="status" aria-live="polite"></div>
+
+      <footer class="footer">
+        <span>Құрметпен, Инфо және Мат-инфо студенттері</span>
+        <span class="dot">•</span>
+        <span class="muted">әуен браузер ережесіне сай тек басқаннан кейін қосылады</span>
+      </footer>
+    </section>
+  </main>
+
+  <!-- “Бармаймын” (тек 1 рет қашады) -->
+  <button class="btn ghost runaway" id="noBtn" type="button">Бармаймын 🙃</button>
+
+  <!-- Конфетти -->
+  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+
+  <!-- Музыка: файл дәл осылай аталады -->
+  <audio id="bgm" src="./muzz.mp3" preload="auto" loop></audio>
+
+  <script src="./script.js"></script>
+</body>
+</html>
