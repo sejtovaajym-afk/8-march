@@ -3,87 +3,782 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Шақыру • 8 Наурыз</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <title>Шақырту • 8 Наурыз</title>
+  <meta name="description" content="КМжАт кафедрасы — ресми шақырту" />
+
+  <style>
+    :root{
+      --bg:#070a14;
+      --glass: rgba(255,255,255,.06);
+      --glass2: rgba(255,255,255,.10);
+      --line: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --muted2: rgba(255,255,255,.55);
+      --accent:#7c5cff;
+      --accent2:#22d3ee;
+      --danger:#ff4d6d;
+      --ok:#34d399;
+      --shadow: 0 22px 70px rgba(0,0,0,.55);
+      --r: 22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font: 500 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 12% 10%, rgba(124,92,255,.22), transparent 60%),
+        radial-gradient(900px 650px at 90% 18%, rgba(34,211,238,.17), transparent 58%),
+        radial-gradient(900px 700px at 50% 115%, rgba(255,255,255,.05), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* subtle grain */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.10;
+      animation: grain 8s steps(10) infinite;
+    }
+    @keyframes grain{
+      0%{transform:translate(0,0)}
+      10%{transform:translate(-2%, -2%)}
+      20%{transform:translate(-4%, 2%)}
+      30%{transform:translate(2%, -4%)}
+      40%{transform:translate(-2%, 6%)}
+      50%{transform:translate(-6%, 2%)}
+      60%{transform:translate(6%, 0)}
+      70%{transform:translate(0, 6%)}
+      80%{transform:translate(-6%, 0)}
+      90%{transform:translate(4%, 2%)}
+      100%{transform:translate(0,0)}
+    }
+
+    .wrap{ min-height:100%; display:grid; place-items:center; padding:26px; }
+    .shell{ width:min(1100px, 100%); }
+
+    .card{
+      position:relative;
+      border-radius: 40px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, var(--glass2), var(--glass));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      opacity:0;
+      transform: translateY(10px);
+      animation: enter .55s ease forwards;
+    }
+    @keyframes enter{ to{ opacity:1; transform: translateY(0); } }
+
+    .glow{
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(720px 360px at 20% 8%, rgba(124,92,255,.34), transparent 62%),
+        radial-gradient(720px 360px at 82% 12%, rgba(34,211,238,.25), transparent 60%);
+      filter: blur(18px);
+      opacity:.65;
+      pointer-events:none;
+    }
+
+    .inner{ position:relative; padding:32px 34px 28px; }
+    .screen{ display:none; }
+    .screen.active{ display:block; }
+
+    .top{
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      margin-bottom: 8px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      color: var(--muted);
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 6px rgba(124,92,255,.12);
+    }
+
+    /* Login like screenshot */
+    .hero{
+      text-align:center;
+      padding: 22px 0 0;
+    }
+    .hero h1{
+      margin: 6px 0 10px;
+      font-size: clamp(30px, 4.2vw, 52px);
+      line-height: 1.06;
+      letter-spacing: -0.9px;
+      font-weight: 900;
+    }
+    .hero p{
+      margin:0;
+      color: var(--muted);
+      font-weight: 520;
+      font-size: 16px;
+    }
+
+    .formRow{
+      margin-top: 24px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .inputWrap{
+      flex: 1 1 520px;
+      min-width: 260px;
+    }
+    input{
+      width:100%;
+      padding:14px 16px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline:none;
+      transition:.18s ease;
+      font-size: 16px;
+    }
+    input::placeholder{ color: rgba(255,255,255,.45); }
+    input:focus{
+      border-color: rgba(124,92,255,.60);
+      box-shadow: 0 0 0 4px rgba(124,92,255,.18);
+    }
+
+    .btn{
+      border:0;
+      padding:14px 16px;
+      border-radius: 16px;
+      cursor:pointer;
+      font-weight:900;
+      color:#070a14;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 30px rgba(124,92,255,.22);
+      transition: transform .12s ease, filter .2s ease;
+      white-space:nowrap;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn:hover{ filter: brightness(1.04); }
+
+    .btnGhost{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      box-shadow:none;
+    }
+
+    .metaRow{
+      margin-top: 16px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+
+    /* Invite header */
+    .inviteTitle{
+      margin: 10px 0 8px;
+      font-size: clamp(26px, 3.4vw, 42px);
+      line-height:1.12;
+      letter-spacing:-.6px;
+      font-weight: 950;
+    }
+    .nameTag{
+      display:inline-block;
+      padding:2px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0 0 12px;
+      color: var(--muted);
+      max-width: 860px;
+    }
+
+    /* Music toggle - top right */
+    .controls{
+      display:flex; justify-content:flex-end;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    .toggle{
+      display:inline-flex; align-items:center; gap:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, border-color .2s ease;
+    }
+    .toggle:hover{ transform: translateY(-1px); border-color: rgba(124,92,255,.35); }
+    .toggle input{ display:none; }
+    .switch{
+      width:46px; height:28px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    .switch::before{
+      content:"";
+      position:absolute; inset:0;
+      opacity:0;
+      transition: opacity .18s ease;
+    }
+    .knob{
+      position:absolute; top:3px; left:3px;
+      width:22px; height:22px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      transition: left .18s ease, transform .18s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,.35);
+    }
+    .toggle.on .knob{ left:21px; transform: scale(1.02); }
+    .toggle.on .switch::before{
+      opacity:1;
+      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(34,211,238,.18));
+    }
+
+    /* Countdown big box like screenshot */
+    .countdown{
+      margin-top: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      background: rgba(0,0,0,.14);
+      backdrop-filter: blur(10px);
+    }
+    .k{
+      font-size:12px;
+      letter-spacing:.35px;
+      text-transform: uppercase;
+      color: var(--muted2);
+    }
+    .timeRow{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+      margin-top:12px;
+    }
+    .tBox{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 14px 14px;
+      background: rgba(0,0,0,.16);
+      min-height: 78px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .tNum{
+      font-size: 28px;
+      font-weight: 950;
+      letter-spacing: .6px;
+      line-height: 1;
+    }
+    .tLab{
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,.60);
+      letter-spacing:.35px;
+      text-transform: uppercase;
+    }
+    .cdNote{
+      margin-top: 10px;
+      color: rgba(255,255,255,.70);
+      font-size: 13px;
+    }
+
+    /* Info cards layout (2 + 1 wide) like screenshot */
+    .infoGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top: 14px;
+    }
+    .infoCard{
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 22px;
+      padding: 16px 16px;
+      background: rgba(0,0,0,.14);
+      backdrop-filter: blur(10px);
+    }
+    .infoWide{ grid-column: 1 / -1; }
+    .infoCard .v{
+      margin-top: 8px;
+      font-size: 16px;
+      font-weight: 900;
+      color: rgba(255,255,255,.92);
+    }
+
+    /* Footer row (RSVP + saved) */
+    .footerRow{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 16px;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+
+    /* RSVP buttons */
+    .btnRow{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .btnOk{
+      background: linear-gradient(135deg, rgba(52,211,153,1), rgba(34,211,238,1));
+      box-shadow: 0 14px 30px rgba(34,211,238,.15);
+    }
+    .btnNo{
+      background: linear-gradient(135deg, rgba(255,77,109,1), rgba(124,92,255,1));
+      box-shadow: 0 14px 30px rgba(255,77,109,.14);
+    }
+
+    /* Signature */
+    .signature{
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,.72);
+      letter-spacing:.25px;
+    }
+
+    /* Animations */
+    .reveal{ animation: reveal .60s cubic-bezier(.2,.9,.2,1) both; }
+    @keyframes reveal{
+      from { opacity:0; transform: translateY(14px) scale(.99); filter: blur(4px); }
+      to   { opacity:1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    .shake{ animation: shake .28s ease both; }
+    @keyframes shake{
+      0%{ transform: translateX(0); }
+      25%{ transform: translateX(-4px); }
+      50%{ transform: translateX(4px); }
+      75%{ transform: translateX(-3px); }
+      100%{ transform: translateX(0); }
+    }
+
+    /* NEXT LEVEL "Барамын" эффект */
+    .successFX{
+      animation: successGlow 1s ease;
+    }
+    @keyframes successGlow{
+      0%{ box-shadow: var(--shadow); }
+      30%{ box-shadow: 0 0 90px rgba(52,211,153,.55); }
+      100%{ box-shadow: var(--shadow); }
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.72);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.9);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 999;
+    }
+    .toast.show{ opacity: 1; transform: translateX(-50%) translateY(-2px); }
+
+    /* Responsive */
+    @media (max-width: 820px){
+      .inner{ padding:26px 20px 22px; }
+      .timeRow{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px){
+      .infoGrid{ grid-template-columns: 1fr; }
+      .infoWide{ grid-column: auto; }
+      .hero h1{ font-size: 34px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ animation:none !important; transition:none !important; }
+      body::before{ display:none; }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Артқы фон -->
-  <div class="bg" aria-hidden="true">
-    <div class="grid"></div>
-    <div class="blob a"></div>
-    <div class="blob b"></div>
-    <div class="blob c"></div>
-    <div class="sparkles"></div>
+  <div class="wrap">
+    <div class="shell">
+      <div class="card" id="card">
+        <div class="glow"></div>
+
+        <!-- SCREEN 1: LOGIN -->
+        <section class="inner screen active" id="screenName">
+          <div class="top">
+            <div class="pill"><span class="dot"></span><span>Ресми шақырту • 8 Наурыз</span></div>
+            <div class="pill">КМжАт кафедрасы</div>
+          </div>
+
+          <div class="hero">
+            <h1>Аты-жөніңізді енгізіңіз</h1>
+            <p>Шақырту сіз енгізген аты-жөніңізбен автоматты түрде жасалады.</p>
+          </div>
+
+          <form class="formRow" id="nameForm" autocomplete="off">
+            <div class="inputWrap">
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                inputmode="text"
+                placeholder="Мысалы: Айым Сейтова"
+                maxlength="60"
+                autofocus
+              />
+            </div>
+            <button class="btn" type="submit">Шақыртуды ашу</button>
+            <button class="btn btnGhost" type="button" id="useSavedBtn">Сақталғанын қолдану</button>
+          </form>
+
+          <div class="metaRow">
+            <span>Дерек тек осы құрылғыда сақталады</span>
+            <span id="hint">Дерек: енгізілмеген</span>
+          </div>
+        </section>
+
+        <!-- SCREEN 2: INVITE -->
+        <section class="inner screen" id="screenInvite">
+          <div class="top">
+            <div class="pill"><span class="dot"></span><span>Шақырту қағазы</span></div>
+            <div class="pill">КМжАт кафедрасы</div>
+          </div>
+
+          <div class="controls">
+            <label class="toggle" id="musicToggle" title="Музыканы қосу/өшіру">
+              <input type="checkbox" />
+              <span>Music</span>
+              <span class="switch"><span class="knob"></span></span>
+            </label>
+          </div>
+
+          <div class="inviteTitle">
+            Құрметті <span class="nameTag" id="nameView">оқытушы</span>!
+          </div>
+          <p class="sub">
+            Сізді <b>8 Наурыз – Халықаралық әйелдер күніне</b> арналған шағын мерекелік жиынға
+            құрметпен шақырамыз.
+          </p>
+
+          <!-- COUNTDOWN -->
+          <div class="countdown">
+            <div class="k">Кездесуге дейін</div>
+            <div class="timeRow" aria-live="polite">
+              <div class="tBox"><div class="tNum" id="cdDays">00</div><div class="tLab">күн</div></div>
+              <div class="tBox"><div class="tNum" id="cdHours">00</div><div class="tLab">сағ</div></div>
+              <div class="tBox"><div class="tNum" id="cdMins">00</div><div class="tLab">мин</div></div>
+              <div class="tBox"><div class="tNum" id="cdSecs">00</div><div class="tLab">сек</div></div>
+            </div>
+            <div class="cdNote" id="cdNote">4 наурыз, 14:00 • КМжАт кафедрасы</div>
+          </div>
+
+          <!-- INFO CARDS (2 + 1 wide) -->
+          <div class="infoGrid">
+            <div class="infoCard">
+              <div class="k">Күні</div>
+              <div class="v">4 наурыз</div>
+            </div>
+            <div class="infoCard">
+              <div class="k">Уақыты</div>
+              <div class="v">14:00</div>
+            </div>
+            <div class="infoCard infoWide">
+              <div class="k">Өтетін орны</div>
+              <div class="v">КМжАт кафедрасы</div>
+            </div>
+          </div>
+
+          <div class="footerRow">
+            <span id="rsvpState">RSVP: таңдалмаған</span>
+            <span>Дерек: сақталды</span>
+          </div>
+
+          <div class="btnRow">
+            <button class="btn btnOk" type="button" id="yesBtn">Барамын ✅</button>
+            <button class="btn btnNo" type="button" id="noBtn">Бара алмаймын ❌</button>
+          </div>
+
+          <div class="signature">Құрметпен, Инфо және Мат-инфо студенттері</div>
+        </section>
+
+      </div>
+    </div>
   </div>
 
-  <main class="wrap">
-    <section class="card" id="card" aria-label="8 Наурызға шақыру">
-      <header class="top">
-        <div class="badge">💐 Университет оқытушыларына • 8 Наурыз</div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-        <div class="topActions">
-          <button class="pill" id="musicToggle" type="button">🔇 Әуен: Өшірулі</button>
-          <button class="pill" id="fullscreenBtn" type="button">⛶ Толық экран</button>
-        </div>
-      </header>
+  <!-- 🎵 muzz.mp3 (index.html тұрған папкада бірге болсын) -->
+  <audio id="bgMusic" preload="auto" loop controls style="display:none">
+    <source src="muzz.mp3" type="audio/mpeg" />
+  </audio>
 
-      <h1 class="title">
-        8 Наурыз мерекесіне <span class="shine">шақыру</span>
-      </h1>
+  <script>
+    const KEY_NAME = "invite_full_name_ultra_final_v1";
+    const KEY_RSVP = "invite_rsvp_ultra_final_v1";
 
-      <p class="subtitle" id="typeText"></p>
+    const card = document.getElementById("card");
+    const screenName = document.getElementById("screenName");
+    const screenInvite = document.getElementById("screenInvite");
 
-      <div class="info">
-        <div class="infoItem">
-          <div class="k">📅 Күні</div>
-          <div class="v">4 наурыз</div>
-        </div>
-        <div class="infoItem">
-          <div class="k">🕒 Уақыты</div>
-          <div class="v">14:00</div>
-        </div>
-        <div class="infoItem">
-          <div class="k">📍 Өтетін орны</div>
-          <div class="v">Акт залы / IT Hub</div>
-        </div>
-      </div>
+    const form = document.getElementById("nameForm");
+    const input = document.getElementById("fullName");
+    const useSavedBtn = document.getElementById("useSavedBtn");
+    const hint = document.getElementById("hint");
 
-      <div class="divider"></div>
+    const nameView = document.getElementById("nameView");
+    const rsvpState = document.getElementById("rsvpState");
 
-      <div class="countdown">
-        <div class="countTitle">Кездесуге дейін:</div>
-        <div class="countNumbers" id="countdown"></div>
-      </div>
+    const toast = document.getElementById("toast");
 
-      <p class="note">
-        Қатысуыңызды растаңыз.
+    const music = document.getElementById("bgMusic");
+    const musicToggle = document.getElementById("musicToggle");
 
-     <div class="actions">
-      <div class="btnRow">
-        <button class="btn primary" id="yesBtn" type="button">Барамын ✅</button>
-        <button class="btn ghost" id="noBtn" type="button">Бармаймын 🙃</button>
-       </div>
-     </div>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
 
+    // Countdown target (Asia/Almaty +05:00) — қажет болса жылын өзгерте аласың
+    const MEET_AT = new Date("2026-03-04T14:00:00+05:00");
 
-      <div class="status" id="status" aria-live="polite"></div>
+    const cdDays = document.getElementById("cdDays");
+    const cdHours = document.getElementById("cdHours");
+    const cdMins = document.getElementById("cdMins");
+    const cdSecs = document.getElementById("cdSecs");
+    const cdNote = document.getElementById("cdNote");
 
-      <footer class="footer">
-        <span>Құрметпен, Инфо және Мат-инфо студенттері</span>
-        <span class="dot">•</span>
-        <span class="muted">әуен браузер ережесіне сай тек басқаннан кейін қосылады</span>
-      </footer>
-    </section>
-  </main>
+    let cdTimer = null;
 
+    function sanitize(v){ return (v||"").replace(/\s+/g," ").trim(); }
+    function pad2(n){ return String(n).padStart(2,"0"); }
 
-  <!-- Конфетти -->
-  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+    function showToast(t){
+      toast.textContent = t;
+      toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=>toast.classList.remove("show"), 1700);
+    }
 
-  <!-- Музыка: файл дәл осылай аталады -->
-  <audio id="bgm" src="./muzz.mp3" preload="auto" loop></audio>
+    // typing effect for name
+    let typingTimer = null;
+    function typeName(el, text){
+      clearInterval(typingTimer);
+      el.textContent = "";
+      let i = 0;
+      typingTimer = setInterval(()=>{
+        el.textContent += text.charAt(i);
+        i++;
+        if(i >= text.length) clearInterval(typingTimer);
+      }, 22);
+    }
 
-  <script src="./script.js"></script>
+    function switchToInvite(){
+      screenName.classList.remove("active");
+      screenInvite.classList.add("active");
+      screenInvite.classList.add("reveal");
+      setTimeout(()=>screenInvite.classList.remove("reveal"), 700);
+      startCountdown();
+      loadRSVP();
+    }
+
+    function setRSVP(v){
+      localStorage.setItem(KEY_RSVP, v);
+      if(v === "yes") rsvpState.textContent = "RSVP: Барамын ✅";
+      else if(v === "no") rsvpState.textContent = "RSVP: Бара алмаймын ❌";
+      else rsvpState.textContent = "RSVP: таңдалмаған";
+    }
+    function loadRSVP(){
+      const v = localStorage.getItem(KEY_RSVP) || "";
+      setRSVP(v);
+    }
+
+    function startCountdown(){
+      if(cdTimer) clearInterval(cdTimer);
+
+      function tick(){
+        const now = new Date();
+        let diff = MEET_AT.getTime() - now.getTime();
+
+        if(diff <= 0){
+          cdDays.textContent = "00";
+          cdHours.textContent = "00";
+          cdMins.textContent = "00";
+          cdSecs.textContent = "00";
+          cdNote.textContent = "Кездесу уақыты келді ✅";
+          clearInterval(cdTimer);
+          cdTimer = null;
+          return;
+        }
+
+        const totalSec = Math.floor(diff / 1000);
+        const days = Math.floor(totalSec / 86400);
+        const hours = Math.floor((totalSec % 86400) / 3600);
+        const mins = Math.floor((totalSec % 3600) / 60);
+        const secs = totalSec % 60;
+
+        cdDays.textContent = pad2(days);
+        cdHours.textContent = pad2(hours);
+        cdMins.textContent = pad2(mins);
+        cdSecs.textContent = pad2(secs);
+      }
+
+      tick();
+      cdTimer = setInterval(tick, 1000);
+    }
+
+    // Saved name availability
+    const saved = sanitize(localStorage.getItem(KEY_NAME));
+    if(saved){
+      hint.textContent = "Дерек: сақталған бар";
+      useSavedBtn.disabled = false;
+    } else {
+      useSavedBtn.disabled = true;
+    }
+
+    // Submit name
+    form.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      const name = sanitize(input.value);
+
+      if(!name){
+        card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
+        showToast("Аты-жөніңізді енгізіңіз 🙂");
+        input.focus();
+        return;
+      }
+
+      localStorage.setItem(KEY_NAME, name);
+      typeName(nameView, name);
+      switchToInvite();
+      showToast("Шақырту дайын ✅");
+    });
+
+    // Use saved name
+    useSavedBtn.addEventListener("click", ()=>{
+      const s = sanitize(localStorage.getItem(KEY_NAME));
+      if(!s){
+        showToast("Сақталған дерек табылмады");
+        return;
+      }
+      input.value = s;
+      typeName(nameView, s);
+      switchToInvite();
+      showToast("Сақталған дерек қолданылды ✅");
+    });
+
+    // Music toggle (reliable)
+    function setMusicUI(on){
+      if(on) musicToggle.classList.add("on");
+      else musicToggle.classList.remove("on");
+      musicToggle.querySelector("input").checked = !!on;
+    }
+    setMusicUI(false);
+
+    async function tryPlayMusic(){
+      music.volume = 1;
+      music.muted = false;
+      try{
+        await music.play();
+        return true;
+      }catch{
+        return false;
+      }
+    }
+
+function setMusicUI(on){
+  if(on) musicToggle.classList.add("on");
+  else musicToggle.classList.remove("on");
+  musicToggle.querySelector("input").checked = !!on;
+}
+
+async function playWithUnlock(){
+  // Кей браузерде play алдында pause->currentTime керек болып қалады
+  music.muted = false;
+  music.volume = 1;
+
+  try{
+    // iOS/кей жағдай үшін "unlock"
+    await music.play();
+    return true;
+  }catch(e){
+    // Қателікті toast-та көрсетеміз
+    showToast("Music қосылмады: " + (e?.name || "Error"));
+    return false;
+  }
+}
+
+musicToggle.addEventListener("click", async (e)=>{
+  e.preventDefault();
+
+  // Егер файл мүлде жүктелмесе – тез байқатамыз
+  // readyState: 0 = NONE, 1 = HAVE_METADATA, 2+ = дерек бар
+  if(music.readyState === 0){
+    // файл жолы дұрыс па тексеруге ишара
+    showToast("muzz.mp3 табылмады болуы мүмкін (папка/аты)");
+  }
+
+  if(music.paused){
+    const ok = await playWithUnlock();
+    if(ok){
+      setMusicUI(true);
+      showToast("Music қосылды 🔊");
+    }else{
+      setMusicUI(false);
+    }
+  }else{
+    music.pause();
+    setMusicUI(false);
+    showToast("Music өшті 🔇");
+  }
+});
+
+    // RSVP buttons
+    yesBtn.addEventListener("click", ()=>{
+      setRSVP("yes");
+      card.classList.remove("successFX"); void card.offsetWidth; card.classList.add("successFX");
+      showToast("Керемет! Сіз барасыз 💚");
+    });
+
+    noBtn.addEventListener("click", ()=>{
+      setRSVP("no");
+      showToast("Түсінікті ✅");
+    });
+  </script>
 </body>
 </html>
